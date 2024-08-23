@@ -1,8 +1,5 @@
-trigger: none
 pr:
-  branches:
-    include:
-    - main
+  - main
 
 stages:
 - stage: Received
