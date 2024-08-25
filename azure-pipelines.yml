@@ -18,4 +18,23 @@ stages:
               az account show
               echo $(Source.BranchName) 
               echo $(System.PullRequest.SourceBranch)
+              RUN_ID=$(az pipelines run \
+                --name build_sdk \
+                --organization https://dev.azure.com/prathambande \
+                --project Playground \
+                --query id \
+                --parameters "BranchName=$(System.PullRequest.SourceBranch)"
+              )
+              echo $RUN_ID
+              echo ${{env.RUN_ID}}
+                      STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+              while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted" ]; do
+                echo $STATUS
+                sleep 30
+                STATUS=$(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+              done
+              echo $STATUS
+              echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
+              echo $(az pipelines runs show --id ${{env.RUN_ID}} --organization https://dev.azure.com/prathambande --project Playground --query result -o tsv)
+  
 
