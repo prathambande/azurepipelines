@@ -16,4 +16,6 @@ stages:
           inlineScript: |
               az --version
               az account show
+              echo $(Source.BranchName) 
+              echo $(System.PullRequest.SourceBranch)"
 
