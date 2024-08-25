@@ -9,6 +9,8 @@ stages:
     steps:
     - task: AzureCLI@2
       displayName: Azure CLI
+      env:
+        AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
       inputs:
           azureSubscription: DemoAZPipe
           scriptType: bash
@@ -26,7 +28,6 @@ stages:
                 --parameters "BranchName=$(System.PullRequest.SourceBranch)"
               )
               echo $RUN_ID
-              echo $(System.AccessToken)
                       STATUS=$(az pipelines runs show --id $RUN_ID --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
               while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted" ]; do
                 echo $STATUS
