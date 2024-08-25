@@ -29,6 +29,7 @@ stages:
               )
               echo $RUN_ID
               echo $AZURE_DEVOPS_EXT_PAT
+              if [ -z $AZURE_DEVOPS_EXT_PAT" ]; then echo "NULL"; else echo "Not NULL"; fi
                       STATUS=$(az pipelines runs show --id $RUN_ID --organization https://dev.azure.com/prathambande --project Playground --query status -o tsv)
               while [ "$STATUS" == "inProgress" ] || [ "$STATUS" == "notStarted" ]; do
                 echo $STATUS
